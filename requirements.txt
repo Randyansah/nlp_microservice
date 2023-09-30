@@ -1,0 +1,9 @@
+transformers
+pytest
+pylint
+pytest-cov
+pandas
+unicorn[standard]
+black
+fastapi
+pydantic

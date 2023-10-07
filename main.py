@@ -1,30 +1,28 @@
-import transformer
+import transformers
 import uvicorn
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import FastAPI 
-from lib.hug_me import main as hg
+from lib.hug_me import nlp
 from pydantic import BaseModel
+import tensorflow
+
 
 app=FastAPI()
-class Hug_me(BaseModel):
-    name:str
-
-@app.post("/Hug_me")    
-async def nlp(hug_me:Hug_me):
-    result=hg(name=Hug_me.name)
-    payload={"Natural Language page":result}
-    json_compatible_item_data=jsonable_encoder(payload)
+class Natural_language(BaseModel):
+    number: int
+    text: str
 
 @app.get("/")
-async def root():
-    return {"nlp":"Hello functions"}
-
-@app.get("/real_d/{input1}/{input2}")
-async def real_d(input1:int,input2:str):
-    return{"Action":hg(input1,input2)}
-
+def index():
+    return {"message":"Hello World"}
 
     
+@app.post("/Hugging_face")
+async def natural_lang(input_data:Natural_language):
+    text=input_data.text
+    number=input_data.number
+    return{"NLP":nlp(number,text)}
 
-       
+if __name__=="__main__":
+    uvicorn.run(app,host="0.0.0.0",port=8080)       
